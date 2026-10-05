@@ -1,0 +1,82 @@
+{
+  "name": "dsh-session-kit",
+  "version": "9999.9.9",
+  "license": "MIT",
+  "description": "DeepSeek Harness sessions kit, with a lightweight memory system and other handy features.",
+  "keywords": [
+    "deepseek",
+    "deepseek-harness",
+    "deepseek-harness-plugin",
+    "dsh",
+    "dsh-plugin",
+    "dsh-plugins",
+    "dsh-session-kit"
+  ],
+  "homepage": "https://github.com/ltxlong/dsh-session-kit#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ltxlong/dsh-session-kit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ltxlong/dsh-session-kit/issues"
+  },
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "publishConfig": { "access": "public" },
+  "optionalDependencies": {
+    "@node-rs/jieba": "^2.0.2"
+  },
+  "files": ["lib/**", "README.md", "README.en.md", "cordis.patch.yml", "package.json", "LICENSE"],
+  "dsh": {
+    "client": {
+      "platform": "web",
+      "external": ["react", "react-dom", "@deepseek-ai/dsh-client-ui-primitives"],
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-renderer",
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-connection",
+        "@deepseek-ai/dsh-api-remotes",
+        "@deepseek-ai/dsh-api-session-controller",
+        "@deepseek-ai/dsh-api-workspace-controller",
+        "@deepseek-ai/dsh-client-ui-session",
+        "@deepseek-ai/dsh-client-ui-workspace",
+        "@deepseek-ai/dsh-client-ui-conversation",
+        "@deepseek-ai/dsh-client-ui-chat",
+        "@deepseek-ai/dsh-session-log-export"
+      ]
+    },
+    "bundle": { "patch": "./cordis.patch.yml" }
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "@deepseek-ai/cordis": "^4.0.1",
+    "@deepseek-ai/dsh-api-remotes": "^0.1.2-alpha.1",
+    "@deepseek-ai/dsh-api-session-controller": "^0.1.2-alpha.1",
+    "@deepseek-ai/dsh-api-workspace-controller": "^0.1.2-alpha.1",
+    "@deepseek-ai/dsh-client-connection": "^0.1.2-alpha.1",
+    "@deepseek-ai/dsh-client-locale": "^0.1.2-alpha.1",
+    "@deepseek-ai/dsh-client-ui-chat": "^0.1.2-alpha.1",
+    "@deepseek-ai/dsh-client-ui-conversation": "^0.1.2-alpha.1",
+    "@deepseek-ai/dsh-client-ui-primitives": "^0.1.2-alpha.1",
+    "@deepseek-ai/dsh-client-ui-renderer": "^0.1.2-alpha.1",
+    "@deepseek-ai/dsh-client-ui-session": "^0.1.2-alpha.1",
+    "@deepseek-ai/dsh-client-ui-workspace": "^0.1.2-alpha.1",
+    "@deepseek-ai/dsh-session-log-export": "^0.1.2-alpha.1",
+    "@deepseek-ai/dsh-storage-domain": "^0.1.2-alpha.1",
+    "@deepseek-ai/dsh-system-prompt": "^0.1.2-alpha.1",
+    "@deepseek-ai/dsh-llm": "^0.1.2-alpha.1",
+    "@deepseek-ai/dsh-tools": "^0.1.2-alpha.1",
+    "@deepseek-ai/dsh-session": "^0.1.2-alpha.1",
+    "@deepseek-ai/dsh-compaction-basic": "^0.1.2-alpha.1",
+    "zod": "^4.4.3"
+  },
+  "peerDependenciesMeta": { "react": { "optional": true }, "react-dom": { "optional": true },
+    "@deepseek-ai/dsh-compaction-basic": { "optional": true }
+  }
+}
