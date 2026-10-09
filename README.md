@@ -87,7 +87,8 @@ dsh plugin --profile web add github:ltxlong/dsh-session-kit
 | 全局提示词 | 「全局提示」那一项的启用开关（同一份状态）| 关 |
 
 * 勾选即存（单键 POST），失败回滚并在面板内报错；
-* 前四项存 `dsh_session_kit_injection_sources` 域，后两项复用各自原有域，不产生第二份真相；
+* 前四项与提示词版本一起存在 **`<profile>/.dsh-session-kit/memory.sqlite`** 的 `memory_settings` 键值对里（后两项复用各自原有域，不产生第二份真相）；
+* **为什么存 memory.sqlite**：dsh-sync 的同步组只覆盖 `settings.yaml`、`profiles` 下的声明文件、`sessions`、`memory.sqlite`、`knowledge.sqlite`——`$DSH_HOME/storages` 不在任何组里，存那里永远同步不过去；存 memory.sqlite 就跟着 memory 组（strategy=merge）走，所以**提示词版本与注入源开关能被同步插件同步**；
 * 记忆召回与常驻段落都是「每轮现算」，改动立刻生效，不需要重启；
 * 宿主插件没重启时新路由还不存在（GET 404 / POST 405），面板会直接提示「重启一次 DSH」。
 
@@ -98,7 +99,8 @@ dsh plugin --profile web add github:ltxlong/dsh-session-kit
 * **一个版本 = 一个预设**：默认版本是 `lite`（大肥鱼），自建版本是 `lite-v2`、`lite-v3`…，工具入口完全相同、只有提示词不同；在会话里用官方预设选择器切换，或绑到工作区自动套用。
 * **新建/编辑/删除版本**：界面上编辑的是**纯文本**，写回时由插件按固定缩进重新生成 YAML 块，用户不可能把 YAML 写坏；每个版本有名字（显示在预设选择器里）和正文，上限 12 个版本、单段 4 万字符。
 * **默认版本的正文**写在 `dsh-preset-lite/cordis.patch.yml` 的 `# >>> workshop:dafeyu >>>` 标记区；**自建版本**由插件写进同文件的 `# >>> workshop:extra >>>` 生成区，一个版本一条预设声明。生成区的工具行是从默认版本现取的，所以改默认版本的工具，自建版本自动跟随。
-* **正文真相在 `dsh_session_kit_prompt_workshop` 域里**，文件只是投影：插件启动时会按库里的版本列表重建生成区。
+* **正文真相在 `<profile>/.dsh-session-kit/memory.sqlite` 的 `memory_settings` 键值对里**（键 `promptWorkshop`），文件只是投影：插件启动时按库里的版本列表重建生成区；`$DSH_HOME/storages` 不在同步范围，所以不存那里。
+* 旧版存在 storageDomain（`$DSH_HOME/storages/dsh_session_kit_prompt_workshop.json`）里的数据会在首次启动时自动迁移进 memory.sqlite；memory 装不上时回落写老域兜底。
 * 写前自动备份到 `<profile>/.dsh-session-kit/prompt-backups/`，写后读回校验；pnpm 的只读文件会自动 `chmod` 重试一次；标记缺失会拒绝写入并报错，不会破坏文件。
 * **生效范围**：提示词改动对新会话生效（已在跑的会话保持旧文本）；插件会在 profile 的 `cordis.patch.yml` 末尾更新一行注释触发一次重组合，必要时重启 DSH。
 * **工作区绑定**：每个工作区可指定一个版本；打开「新会话按工作区自动套用」后，新会话落在已绑定的工作区会自动切到该版本（护栏：子代理会话不动、工作区没绑定不动、只对空白会话生效、失败只记日志）。
