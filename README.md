@@ -347,3 +347,12 @@ dsh plugin --profile web add github:ltxlong/dsh-session-kit
 
 [MIT](LICENSE)
 
+
+## 子插槽：dsh-session-kit.settings.extra（9999.9.11）
+
+「会话与提示词」分区对外开了一个子插槽，别的插件可以把设置块挂进来（当前使用者：dsh-adapter-compat 的「压缩出口与版本分页器」）。
+
+- 声明：本插件注册 \settings.section\ 时用 \children\ 表声明 \dsh-session-kit.settings.extra\（\{ kind: 'list', scope: 'root' }\）；
+- 渲染：\SessionKitSettingsSection\ 通过 props 的 \enderSlot\ 渲染该槽；
+- 约束：slot 机制规定「注册进未声明的槽位会抛 \slot "…" is not declared\」——所以插件必须用 \ctx.slots.inject(键, 回调)\（按声明 epoch 触发），不要直接 \egister\；
+- 兼容：没有任何插件往里注册时，该槽渲染为 null——**session-kit 单独启用不会有空壳、不会报错**。
