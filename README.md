@@ -356,3 +356,22 @@ dsh plugin --profile web add github:ltxlong/dsh-session-kit
 - 渲染：\SessionKitSettingsSection\ 通过 props 的 \enderSlot\ 渲染该槽；
 - 约束：slot 机制规定「注册进未声明的槽位会抛 \slot "…" is not declared\」——所以插件必须用 \ctx.slots.inject(键, 回调)\（按声明 epoch 触发），不要直接 \egister\；
 - 兼容：没有任何插件往里注册时，该槽渲染为 null——**session-kit 单独启用不会有空壳、不会报错**。
+
+
+# 修复：快照轮换事件被误判成「删轮墓碑」（9999.9.14）
+
+**事故（2026-10-16，双侧实测）**：本插件用 `user/message` + `surfaceOp: {op:'replace'}` 轮换自己的记忆快照，事件形状与「用户删某一轮」的墓碑**完全一致**。外部删除检测器（`dsh-adapter-compat` 的 true-delete）只按 `kind` 前缀豁免，漏掉了后来的 `-memory-eject` 变体 → 把快照轮换当成删轮墓碑、**整轮物理切除**用户对话：手机 `session-7e75046b` 712→467、电脑 `session-afa6ba0b` 2077→1759。用户视角是「每重启一次 DSH 就少一大段对话」，而**用户没有删任何东西**。
+
+**修法（源头加显式标记）**：所有快照轮换来源都带
+
+```js
+source: { kind: 'dsh-session-kit-memory-*', snapshotRotation: true, ... }
+```
+
+- `buildMemorySource()` 统一产出该字段；
+- 两处裸 `memory-eject` 事件同样带上（此前连 `summary` 都没有，外部只能瞎猜）。
+
+**消费方约定**：看到 `source.snapshotRotation === true` 即表示「只遮蔽本插件自己的旧快照节点」，**任何情况下都不许推导整轮**。以后新增任何 `-memory-*` 变体都必须带这个字段。
+
+（2026-10-16 由 dsh-session-kit 9999.9.14 + dsh-adapter-compat 9999.9.34 一起落地。）
+
