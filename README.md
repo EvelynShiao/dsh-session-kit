@@ -99,6 +99,7 @@ dsh plugin --profile web add github:ltxlong/dsh-session-kit
 * **一个版本 = 一个预设**：默认版本是 `lite`（大肥鱼），自建版本是 `lite-v2`、`lite-v3`…，工具入口完全相同、只有提示词不同；在会话里用官方预设选择器切换，或绑到工作区自动套用。
 * **新建/编辑/删除版本**：界面上编辑的是**纯文本**，写回时由插件按固定缩进重新生成 YAML 块，用户不可能把 YAML 写坏；每个版本有名字（显示在预设选择器里）和正文，上限 12 个版本、单段 4 万字符。
 * **默认版本的正文**写在 `dsh-preset-lite/cordis.patch.yml` 的 `# >>> workshop:dafeyu >>>` 标记区；**自建版本**由插件写进同文件的 `# >>> workshop:extra >>>` 生成区，一个版本一条预设声明。生成区的工具行是从默认版本现取的，所以改默认版本的工具，自建版本自动跟随。
+* **四个槽位**（2026-10-18 扩展）：`dafeyu`（lite·大肥鱼）/ `plain`（lite-plain·普通节约）/ `chat`（lite-chat·纯聊天，零工具）/ `kb`（lite-chat-kb·纯聊天+知识库）。chat 与 kb 两版的预设声明在 extra 生成区**之外**（自己的标记对），工坊重建不会误删；纯文本界面同样可编辑这两版的 persona。
 * **正文真相在 `<profile>/.dsh-session-kit/memory.sqlite` 的 `memory_settings` 键值对里**（键 `promptWorkshop`），文件只是投影：插件启动时按库里的版本列表重建生成区；`$DSH_HOME/storages` 不在同步范围，所以不存那里。
 * 旧版存在 storageDomain（`$DSH_HOME/storages/dsh_session_kit_prompt_workshop.json`）里的数据会在首次启动时自动迁移进 memory.sqlite；memory 装不上时回落写老域兜底。
 * 写前自动备份到 `<profile>/.dsh-session-kit/prompt-backups/`，写后读回校验；pnpm 的只读文件会自动 `chmod` 重试一次；标记缺失会拒绝写入并报错，不会破坏文件。
