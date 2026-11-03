@@ -1,0 +1,29 @@
+{
+  "format": 1,
+  "state": "no-dependencies",
+  "plugin": "dsh-session-kit",
+  "version": "9999.9.9",
+  "archiveSha256": "",
+  "manifestSha256": "8235b3eced401b3fe899900c0479599e4bffc9b8f1443c32be25c17f5faa3247",
+  "treeSha256": "b5f5b016ac380590fd687ae9176beaddc371fea52c6e28a1b91cc522dab440d0",
+  "resolved": [
+    {
+      "path": "node_modules/@node-rs/jieba",
+      "name": "@node-rs/jieba",
+      "version": "2.0.4",
+      "manifestSha256": "68228834d5630324dbb99c0c488922c51491a1b43209e18366ba61861a956fb8"
+    },
+    {
+      "path": "node_modules/@node-rs/jieba-linux-arm64-gnu",
+      "name": "@node-rs/jieba-linux-arm64-gnu",
+      "version": "2.0.4",
+      "manifestSha256": "67a653aa342cf014adb019719ec64f8776196628d6f87a7bf2b72cc9735f92d1"
+    }
+  ],
+  "lockSha256": "b52c6a2774545a4f394576d1c58a9eff40e6331417d69cca1fd86a25f9da31d5",
+  "manager": "pnpm",
+  "managerVersion": "not-executed",
+  "integrity": "actual file tree SHA-256 and native pnpm lockfile",
+  "runtimeDsh": "0.2.0-rc.2",
+  "authorClaims": {}
+}
