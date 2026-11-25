@@ -1,7 +1,8 @@
 const test = require('node:test')
 const assert = require('node:assert/strict')
 const fs = require('node:fs')
-const source = fs.readFileSync(new URL('../lib/client.js', `file://${__filename}`).pathname, 'utf8')
+const path = require('node:path')
+const source = fs.readFileSync(path.join(__dirname, '..', 'lib', 'client.js'), 'utf8')
 const component = source.slice(source.indexOf('function TurnsDelAction('), source.indexOf('function deletedTurnsDelRange('))
 
 test('message actions do not create per-message global MutationObservers', () => {
