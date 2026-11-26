@@ -1,0 +1,16 @@
+dsh-session-kit
+Copyright (c) 2026 EvelynShiao（本仓库的修改与新增部分）
+
+许可证
+------
+本仓库的整体发布许可证为 Mozilla Public License 2.0（见 LICENSE）。
+
+
+上游许可
+--------
+上游：https://github.com/ltxlong/dsh-session-kit（MIT）。
+原许可证全文保留在 LICENSE-UPSTREAM，其版权与许可声明不得移除。
+
+说明：MPL-2.0 是文件级弱著佐权。上游文件保留其原有许可证与版权声明；
+本仓库中由 EvelynShiao 修改或新增的文件，按 MPL-2.0 发布。分发本仓库或
+其衍生作品时，请一并保留 LICENSE、LICENSE-UPSTREAM 与本 NOTICE。
