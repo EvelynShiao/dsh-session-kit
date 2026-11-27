@@ -1,7 +1,7 @@
 {
   "name": "dsh-session-kit",
   "version": "9999.9.9",
-  "license": "MIT",
+  "license": "MPL-2.0",
   "description": "DeepSeek Harness sessions kit, with a lightweight memory system and other handy features.",
   "keywords": [
     "deepseek",
@@ -27,15 +27,28 @@
     "./client": "./lib/client.js",
     "./package.json": "./package.json"
   },
-  "publishConfig": { "access": "public" },
+  "publishConfig": {
+    "access": "public"
+  },
   "optionalDependencies": {
     "@node-rs/jieba": "^2.0.2"
   },
-  "files": ["lib/**", "README.md", "README.en.md", "cordis.patch.yml", "package.json", "LICENSE"],
+  "files": [
+    "lib/**",
+    "README.md",
+    "README.en.md",
+    "cordis.patch.yml",
+    "package.json",
+    "LICENSE"
+  ],
   "dsh": {
     "client": {
       "platform": "web",
-      "external": ["react", "react-dom", "@deepseek-ai/dsh-client-ui-primitives"],
+      "external": [
+        "react",
+        "react-dom",
+        "@deepseek-ai/dsh-client-ui-primitives"
+      ],
       "inject": [
         "@deepseek-ai/dsh-client-ui-renderer",
         "@deepseek-ai/dsh-client-locale",
@@ -50,7 +63,9 @@
         "@deepseek-ai/dsh-session-log-export"
       ]
     },
-    "bundle": { "patch": "./cordis.patch.yml" }
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
   },
   "peerDependencies": {
     "react": "^18.2.0",
@@ -76,7 +91,15 @@
     "@deepseek-ai/dsh-compaction-basic": "^0.1.2-alpha.1 || ^0.2.0-rc.1",
     "zod": "^4.4.3"
   },
-  "peerDependenciesMeta": { "react": { "optional": true }, "react-dom": { "optional": true },
-    "@deepseek-ai/dsh-compaction-basic": { "optional": true }
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    },
+    "@deepseek-ai/dsh-compaction-basic": {
+      "optional": true
+    }
   }
 }
