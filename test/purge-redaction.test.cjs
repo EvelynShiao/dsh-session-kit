@@ -111,7 +111,11 @@ test('purge：被删轮次的全部正文载体都清空，区间外的字一个
   assert.equal(after.length, rows.length, '行数必须不变（只清正文不删行）')
 
   const text = JSON.stringify(after)
-  for (const marker of ['DROP2 双写副本原文', 'DROP2 系统头原文', 'DROP2 第二轮提问原文', 'DROP2 记忆召回原文', 'DROP2 标题请求正文', 'DROP2 标题系统提示', 'DROP2 自动标题', 'DROP2 思考原文', 'DROP2 第二轮回答原文', 'DROP2 回答流式原文']) {
+  /* 标题文字按新策略保留（标题是会话名字，不是对话正文；2026-11-28 用户实机反馈：
+     删一轮导致侧栏会话名变成「[已删除]」）。只断言「指向已删 seq 的引用」被清掉。 */
+  const titleAfter = after.filter((row) => row.type === 'session/title')
+  for (const row of titleAfter) assert.deepEqual(row.data.messageSeqs, [], '标题不应再引用已删除的 seq')
+  for (const marker of ['DROP2 双写副本原文', 'DROP2 系统头原文', 'DROP2 第二轮提问原文', 'DROP2 记忆召回原文', 'DROP2 标题请求正文', 'DROP2 标题系统提示', 'DROP2 思考原文', 'DROP2 第二轮回答原文', 'DROP2 回答流式原文']) {
     assert.equal(text.includes(marker), false, `残留正文：${marker}`)
   }
   for (const marker of ['KEEP1 第一轮提问原文', 'KEEP1 第一轮回答原文', 'KEEP1 第一轮流式原文']) {
