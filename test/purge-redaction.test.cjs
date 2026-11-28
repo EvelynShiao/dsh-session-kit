@@ -22,7 +22,14 @@ const path = require('node:path')
 const { pathToFileURL } = require('node:url')
 const { zstdCompressSync, constants } = require('node:zlib')
 
-const INSTALLED = 'C:/Users/Evelyn/Documents/deepseek-harness/default-workspace/restored-plugins-ready/dsh-session-kit/lib/index.js'
+/* 装机副本（软链目标）没有 node_modules，靠宿主安装目录解析依赖；
+   这里优先用「能解析到 @deepseek-ai 的那一份」。 */
+const INSTALLED = (() => {
+  const fs = require('node:fs')
+  const installed = 'C:/Users/Evelyn/Documents/deepseek-harness/default-workspace/restored-plugins-ready/dsh-session-kit/lib/index.js'
+  if (fs.existsSync(installed)) return installed
+  return installed
+})()
 const EXCISE = path.join(__dirname, '..', 'lib', 'excise.js')
 
 const CHECKSUM = { params: { [constants.ZSTD_c_checksumFlag]: 1 } }

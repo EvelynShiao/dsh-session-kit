@@ -22,7 +22,21 @@ async function loadExcise() {
   return exciseMod
 }
 
-const HOST_SESSION = 'C:/Users/Evelyn/AppData/Local/Programs/DeepSeekHarness/dsh/node_modules/@deepseek-ai/dsh-session/lib/index.js'
+/* 宿主安装目录会变（2026-11-28 从 DeepSeekHarness 迁到带空格的 [DSH] 目录），
+   所以按候选列表找，别写死。 */
+const HOST_SESSION = (() => {
+  const fs = require('node:fs')
+  const bases = [
+    'C:/Users/Evelyn/AppData/Local/Programs/DeepSeekHarness/dsh',
+    'C:/Users/Evelyn/AppData/Local/Programs/[DSH]/resources/app.asar/dsh',
+    'C:/Users/Evelyn/AppData/Roaming/npm/node_modules/@deepseek-ai/dsh'
+  ]
+  for (const base of bases) {
+    const p = base + '/node_modules/@deepseek-ai/dsh-session/lib/index.js'
+    if (fs.existsSync(p)) return p
+  }
+  return bases[0] + '/node_modules/@deepseek-ai/dsh-session/lib/index.js'
+})()
 let hostSessionMod
 async function loadHostSession() {
   if (!hostSessionMod) hostSessionMod = await import(pathToFileURL(HOST_SESSION).href)
